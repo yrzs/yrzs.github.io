@@ -154,7 +154,7 @@
                 </path>
               </svg>
               Posts
-              <span class="Counter">4</span>
+              <span class="Counter">5</span>
             </a>
           </nav>
           <div class="profile-color-modes js-promo-color-modes-banner-profile isInitialToggle">
@@ -467,7 +467,7 @@
         </path>
       </svg>
       Posts
-      <span class="Counter ">4</span>
+      <span class="Counter ">5</span>
     </a>
   </nav>
 </div>
@@ -481,6 +481,36 @@
         
       
       <ul>
+        
+        <li class="col-12 d-flex width-full py-4 border-bottom color-border-secondary public source">
+          <div class="col-12 d-inline-block">
+            <div class="d-inline-block mb-1">
+              <h3 class="wb-break-all">
+                <a href="https://yrzs.github.io/post/2022/7/20/b&#43;tree-usage/">B&#43;tree Usage</a>
+              </h3>
+            </div>
+
+            <div>
+              <div class="col-12 d-inline-block text-gray mb-2 pr-4">
+                B+Tree 索引的使用 前言 - 每个索引都对应一棵 B+Tree ,树分为好多层，最下边一层是叶子节点， 其余的是内节点。所有 用户记录 都 存储在 B+Tree 的 叶子节点 ， 所有 目录项记录 都存在 内节点。 InnoDB 存储引擎会自动为 主键（没有创建主键会在隐藏信息里创建） 建立 聚簇索引 ，聚簇索引的叶子 节点包含完整的用户记录。 我们可以为常用的列建立 二级索引 , 二级索引的叶子节点包含的用户记录由 索引列+主键 组成，所以如果 相通过二级索引来查找完整的用户记录的花，需要通过 回表 操作。 B+Tree 每层节点都是按照索引列值从小到大的顺序排成双向链表，而每个页内的记录（用户记录、目录项记录）都是按照 索引列值从小到大排成单项链表。如果是 联合索引 ，则页面和记录先按照联合索引前边的列排序，如果该列值相同，再 按照后边的列值排序。 通过索引查找记录是从 B+Tree 的 根节点 开始，一层一层向下搜索。由于每个页面都按照索引列的值建立了 Page Directory (页目录)，所以查找非常快。 索引的代价 空间上的代价：
+每建立一个索引都要建立一棵 B+Tree ,每一棵树的每一个节点都是一个数据页，一个页默认占用16kb的存储空间。 时间上的代价：
+每次对表中的数据进行增、删、改操作时，都需要去维护各个 B+Tree 索引。 增、删、改操作可能会对节点和记录的排序造成破坏，所以存储引擎需要额外的时间进行一些记录移位，页面分裂、页面回收等操作来维护好节点和记录的排序。 因此，一个表上索引建的越多，就会占用越多的存储空间，在增删改时的性能就会越差。
+B+Tree 索引适用条件 假设我们有如下person_info 表，并建立了 idx_name_birthday_phone_number 联合索引
+CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT NULL, birthday DATE NOT NULL, phone_number CHAR(11) NOT NULL, country varchar(100) NOT NULL, PRIMARY KEY (id), KEY idx_name_birthday_phone_number (name, birthday, phone_number) ); 由此表结构我们可以得知：
+              </div>
+            </div>
+
+            <div class="f6 text-gray mt-2">
+              
+
+              Created
+              <relative-time datetime=" Wed, 20 Jul 2022 10:29:15 &#43;0800" class="no-wrap"
+                title=" Wed, 20 Jul 2022 10:29:15 &#43;0800">
+                Wed, 20 Jul 2022 10:29:15 &#43;0800
+              </relative-time>
+            </div>
+          </div>
+        </li>
         
         <li class="col-12 d-flex width-full py-4 border-bottom color-border-secondary public source">
           <div class="col-12 d-inline-block">
