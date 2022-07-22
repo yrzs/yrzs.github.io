@@ -162,9 +162,9 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Thu, 21 Jul 2022 18:16:21 &#43;0800"
+                  Modified <relative-time datetime="Fri, 22 Jul 2022 10:45:38 &#43;0800"
                     class="no-wrap">
-                    Thu, 21 Jul 2022 18:16:21 &#43;0800</relative-time>
+                    Fri, 22 Jul 2022 10:45:38 &#43;0800</relative-time>
                   
                 </div>
               </div>
@@ -194,7 +194,7 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
                         </div>
                       </div>
                     </details-menu>
-                      1850 Words
+                      2530 Words
                     
 
                   </div>
@@ -206,8 +206,8 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
 
 
               <div class="Box-body px-5 pb-5" style="z-index: 1">
-                <article class="markdown-body entry-content container-lg"><h3 id="btree-索引的使用">B+Tree 索引的使用</h3>
-<h4 id="前言--">前言 -</h4>
+                <article class="markdown-body entry-content container-lg"><h2 id="btree-索引的使用">B+Tree 索引的使用</h2>
+<h3 id="前言--">前言 -</h3>
 <ul>
 <li>每个索引都对应一棵 B+Tree ,树分为好多层，最下边一层是叶子节点， 其余的是内节点。所有 <em><em>用户记录</em></em> 都
 存储在 B+Tree 的 <em>叶子节点</em> ， 所有 <em><em>目录项记录</em></em> 都存在 <em>内节点</em>。</li>
@@ -221,18 +221,18 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
 <li>通过索引查找记录是从 B+Tree 的 <em><em>根节点</em></em> 开始，一层一层向下搜索。由于每个页面都按照索引列的值建立了
 <em><em>Page Directory</em></em> (页目录)，所以查找非常快。</li>
 </ul>
-<h4 id="索引的代价">索引的代价</h4>
+<h3 id="索引的代价">索引的代价</h3>
 <p>空间上的代价：</p>
-<h5 id="heading"></h5>
+<h4 id="heading"></h4>
 <pre><code> 每建立一个索引都要建立一棵 B+Tree ,每一棵树的每一个节点都是一个数据页，一个页默认占用16kb的存储空间。
 </code></pre>
 <p>时间上的代价：</p>
-<h5 id="heading-1"></h5>
+<h4 id="heading-1"></h4>
 <pre><code> 每次对表中的数据进行增、删、改操作时，都需要去维护各个 B+Tree 索引。
  增、删、改操作可能会对节点和记录的排序造成破坏，所以存储引擎需要额外的时间进行一些记录移位，页面分裂、页面回收等操作来维护好节点和记录的排序。
 </code></pre>
 <p>因此，一个表上索引建的越多，就会占用越多的存储空间，在增删改时的性能就会越差。</p>
-<h4 id="btree-索引适用条件">B+Tree 索引适用条件</h4>
+<h3 id="btree-索引适用条件">B+Tree 索引适用条件</h3>
 <p>假设我们有如下<code>person_info</code> 表，并建立了 <code>idx_name_birthday_phone_number</code> 联合索引</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">person_info</span><span class="p">(</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">auto_increment</span><span class="p">,</span><span class="w">
@@ -256,13 +256,13 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
 <li>如果 <code>name</code> 列的值相同，则按照 <code>birthday</code> 列的值进行排序</li>
 <li>如果 <code>birthday</code> 列的值也相同，则按照 <code>phone_number</code> 的值进行排序</li>
 </ul>
-<h5 id="全值匹配">全值匹配</h5>
+<h4 id="全值匹配">全值匹配</h4>
 <pre><code> 如果搜索条件中的列和索引列一致的话，这种情况就是 全值匹配。
 </code></pre>
-<h5 id="匹配左边的列">匹配左边的列</h5>
+<h4 id="匹配左边的列">匹配左边的列</h4>
 <pre><code> 如果我们想使用联合索引中尽可能多的列，搜索条件中的各个列必须是联合索引中从最左边连续的列。
 </code></pre>
-<h5 id="匹配列前缀">匹配列前缀</h5>
+<h4 id="匹配列前缀">匹配列前缀</h4>
 <pre><code> 某个列建立索引的意思其实就是在对应的 B+Tree 的记录中使用该列的值进行排序。
 </code></pre>
 <p>字符串排序的本质就是比较哪个字符串大一点儿，哪个字符串小一点，比较字符串大小就用到了该列的字符集和比较规则，一般的比较规则都是逐个比较字符的大小，
@@ -278,28 +278,58 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
 </span></span></span></code></pre></div><p>但是需要注意的是，如果只给出后缀或者中间的某个字符串，比如这样：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%As%&#39;</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>就无法快速定位记录位置了，因为字符串中间有<code>As</code>的字符串并没有排好序，只能进行全表扫描。</p>
-<h5 id="匹配范围值">匹配范围值</h5>
+<h4 id="匹配范围值">匹配范围值</h4>
 <p>因为 B+Tree 索引所有记录都是 <em><strong>按照索引列的值小从到大的顺序排好序的</strong></em> 所以这极大的方便我们查找索引列的值在某个范围内的记录
 如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">&#39;Asa&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;Barlow&#39;</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>最左匹配：
 如果对多个列同时进行范围查找的话，只有对索引最左边的那个列进行范围查找的时候才能用到 B+Tree 索引</p>
-<h5 id="精确匹配某一列并范围匹配某一行">精确匹配某一列并范围匹配某一行</h5>
+<h4 id="精确匹配某一列并范围匹配某一行">精确匹配某一列并范围匹配某一行</h4>
 <p>对于同一个联合索引来说，虽然对多个列都进行范围查找时只能用到最左边那个索引列，但是如果左边的列是精确查找，则右边的列可以
 范围查找。如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Ashburn&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">birthday</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">&#39;1997-07-12&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">birthday</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="s1">&#39;2022-07-20&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">phone_number</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="s1">&#39;15500000000&#39;</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><h4 id="排序">排序</h4>
+</span></span></span></code></pre></div><h3 id="1-用于排序">1. 用于排序</h3>
 <p>如果 <code>ORDER BY</code> 子句里使用到了我们设置的索引列，就有可能省去在内存或文件中排序的步骤。比如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">birthday</span><span class="p">,</span><span class="w"> </span><span class="n">phone_number</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>这个查询结果集先按照 <code>name</code> 值排序，如果记录的 <code>name</code> 值相同，则需要按照 <code>birthday</code> 来排序&hellip;</p>
-<h5 id="使用联合索引进行排序注意事项">使用联合索引进行排序注意事项</h5>
+<h4 id="使用联合索引进行排序注意事项">使用联合索引进行排序注意事项</h4>
 <p>对于 <em><strong>联合索引</strong></em> 有个问题需要注意， <code>Order by</code> 的子句后面的列的顺序页必须按照索引列的顺序给出，如果 <code>ORDER BY phone_number, birthday, name</code>
 的顺序排序将无法使用 B+Tree 索引。</p>
 <p>当联合索引左边列的值为常量，也可以使用后边的列进行排序。如：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">birthday</span><span class="p">,</span><span class="w"> </span><span class="n">phone_number</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre></div><h5 id="不可以使用索引进行排序的几种情况">不可以使用索引进行排序的几种情况</h5>
-<h6 id="asc-sesc-混用">ASC SESC 混用</h6>
+</span></span></span></code></pre></div><h4 id="不可以使用索引进行排序的几种情况">不可以使用索引进行排序的几种情况</h4>
+<h5 id="asc-sesc-混用">ASC SESC 混用</h5>
 <p>对于使用联合索引进行排序的场景，需要求各个排序列的排序顺序是一样的，要么都是ASC，要么都是DESC。</p>
+<p>如果查询中的各个排序列的排序顺序是一致的，如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">birthday</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 这种情况直接从索引的最左边开始往右读10行记录就可以了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">birthday</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 这种情况直接从索引的最右边开始往左读10行记录就可以了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">birthday</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 这样如果使用索引排序的话过程就是这样的：
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 1. 先从索引的最左边确定 name 列最小的值，然后找到 name 列等于该值的所有记录，然后从 name 列等于该值的最右边的那条记录开始往左找10条记录。
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 2. 如果 name 列等于最小的值的记录不足10条，再继续往右找 name 值第二小的记录，重复上边那个过程，直到找到10条记录为止
+</span></span></span></code></pre></div><h5 id="where-子句中出现非排序使用到的索引列">Where 子句中出现非排序使用到的索引列</h5>
+<p>如果 <code>where</code> 字句出现了非排序使用到的索引列，那么排序则无法使用索引。如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">country</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;China&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>这个查询只能先把符合搜索条件 <code>country='china'</code> 的记录提取出来再排序，但是 <code>country</code> 字段并没有建立 B+Tree 索引，
+所以使用被不到索引。而下面这个语句则可以用到 <code>idx_name_birthday_phone_number</code> 索引:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">birthday</span><span class="p">,</span><span class="w"> </span><span class="n">phone_number</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h5 id="排序列包含非同一个索引的列">排序列包含非同一个索引的列</h5>
+<p>有很多情况下我们用来排序的多个列并不在同一索引里面，这样我们用不到索引进行排序。如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">country</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><h5 id="排序列使用了复杂的表达式">排序列使用了复杂的表达式</h5>
+<p>要用到索引进行排序操作，必须保证索引列是以单独列的形式出现，而使用函数修饰过的列并不是单独列。</p>
+<h3 id="2-用于分组">2. 用于分组</h3>
+<p>我们经常需要按照某些列聚合一些统计信息，用到 <code>group by</code> 语句。如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">birthday</span><span class="p">,</span><span class="w"> </span><span class="n">phone_number</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">person_info</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">birthday</span><span class="p">,</span><span class="w"> </span><span class="n">phone_number</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>这个查询语句相当于做了3次分组操作：</p>
+<ul>
+<li>先把记录按照 <code>name</code> 值进行分组， 所有 <code>name</code> 值相同的记录划分为一组</li>
+<li>将每个 <code>name</code> 值相同的分组里的记录再按照 <code>birthday</code> 的值进行分组，将 <code>birthday</code> 值相同的记录放到一个小分组里</li>
+<li>再将小分组里的数据按照 <code>phone_number</code> 的值分成更小的分组</li>
+</ul>
+<p>然后对最小的分组进行统计。</p>
 </article>
               </div>
             </div>
@@ -319,7 +349,7 @@ CREATE TABLE person_info( id INT NOT NULL auto_increment, name VARCHAR(100) NOT 
   const gitalk = new Gitalk({
     clientID: '628adabb4297db2b81d9',
     clientSecret: 'b2472142a99b06bcb4dca30fece71bcb6c43629f',
-    repo: 'https:\/\/yrzs.github.io',
+    repo: 'yrzs.github.io',
     owner: 'yrzs',
     admin: ['yrzs'],
     id: eval("location.pathname"), 
